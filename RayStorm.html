@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="description" content="Jeu RayStorm" />
+<meta name="keywords" content="RayStorm, Jeu, JavaScript" />
+<meta name="author" content="AUDA">
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="css/core.css">
+<link rel="stylesheet" type="text/css" href="css/typeography.css">
+<link rel="stylesheet" type="text/css" href="css/RayStorm.css">
+<title>RayStorm</title>
+
+
+</head>
+
+<body onload="init();">
+
+	<aside>
+
+		<div id="fps"></div>
+		<br />
+		<div id="chat">
+		<p>
+			<canvas width=50 height=50 id="myCanvas"></canvas>
+		</p>
+		<div
+			style="float: left; width: 100px; border-right: 1px solid black; height: 300px; padding: 10px; overflow: scroll-y;">
+			<b>USERS</b>
+			<div id="users"></div>
+		</div>
+		<div
+			style="float: left; width: 300px; height: 250px; overflow: scroll-y; padding: 10px;">
+			<div id="conversation"></div>
+			<input id="data" style="width: 200px;" /> <input type="button"
+				id="datasend" value="send" />
+		</div>
+</div>
+	</aside>
+
+<div id= "gameAndFooter">
+	<section id="game">
+		<div id="starfield"></div>
+		<div id="gamecontainer">
+			<canvas id="gameCanvas"></canvas>
+		</div>
+	</section>
+
+	<footer>
+			<p>Move with arrow keys or with the joysticks of the gamepad, fire with the space bar or with the A (XBox) or X (PlayStation) button of the gamepad. You can also change the aspect of your ship with LB/RB buttons (XBox) or L1/R1 (PlayStation) of the gamepad and put the game in pause with 'p' or with RT/LB button (XBox) or R1/L1 (PlayStation) of the gamepad. Try to catch the red stars to obtain a super attack for a few seconds ! The invaders
+				get faster and drop more bombs as you complete each level !</p>
+			<p>
+				<a id="muteLink" href="#" onclick="toggleMute()">mute</a> | <a
+					href="https://github.com/alexandreauda/Raystorm">RayStorm on
+					github</a>
+			</p>
+
+	</footer>
+</div>
+	<script src="jeu.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="chat.js"></script>
+
+	<script src="js/starfield.js"></script>
+	<script src="js/spaceinvaders.js"></script>
+	<script src="js/run_game.js"></script>
+
+
+
+</body>
+</html>
