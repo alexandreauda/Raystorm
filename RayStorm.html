@@ -2,6 +2,7 @@
 <html>
 
 <head>
+<link rel="icon" href="images/PenroseColor.ico" type="image/x-icon" />
 <meta name="description" content="Jeu RayStorm" />
 <meta name="keywords" content="RayStorm, Jeu, JavaScript" />
 <meta name="author" content="AUDA">
@@ -36,6 +37,9 @@
 				id="datasend" value="send" />
 		</div>
 </div>
+
+<div id="audio"></div>
+
 	</aside>
 
 <div id= "gameAndFooter">
@@ -45,9 +49,16 @@
 			<canvas id="gameCanvas"></canvas>
 		</div>
 	</section>
+	
+	  
 
 	<footer>
-			<p>Move with arrow keys or with the joysticks of the gamepad, fire with the space bar or with the A (XBox) or X (PlayStation) button of the gamepad. You can also change the aspect of your ship with LB/RB buttons (XBox) or L1/R1 (PlayStation) of the gamepad and put the game in pause with 'p' or with RT/LB button (XBox) or R1/L1 (PlayStation) of the gamepad. Try to catch the red stars to obtain a super attack for a few seconds ! The invaders
+	<p>
+	<div id="progress" class="progressbar"></div>
+  <div  class="progressnum" id="progressnum"></div>
+	</p>
+	
+			<p>Move with arrow keys or with the joysticks of the gamepad, fire with the space bar or with the A (XBox) or X (PlayStation) button of the gamepad. You can also change the aspect of your ship with LB/RB buttons (XBox) or L1/R1 (PlayStation) of the gamepad and put the game in pause with 'p' or with RT/LB button (XBox) or R1/L1 (PlayStation) of the gamepad. Try to catch the red stars to obtain a super attack for a few seconds and the blue stars to obtain an invincible shield for a few seconds too ! The invaders
 				get faster and drop more bombs as you complete each level !</p>
 			<p>
 				<a id="muteLink" href="#" onclick="toggleMute()">mute</a> | <a

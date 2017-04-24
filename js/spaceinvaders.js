@@ -30,6 +30,7 @@ function Game() {
 	this.config = {
 			bombRate: 0.05, // Number of bombs of the invaders.
 			powerItemRate: 0.007, // Number of bombs of the invaders.
+			shipShieldItemRate: 0.006, // Number of bombs of the invaders.
 			bombMinVelocity: 50, // Velocity minimal of the bomb.
 			bombMaxVelocity: 50, // Velocity maximal of the bomb.
 			invaderInitialVelocity: 25, // Velocity initial of the invader.
@@ -79,13 +80,28 @@ function Game() {
 	this.isPause = false;
 	this.QuitPause = false;
 
+	this.hasShield = false;
+	this.shieldRed = false;
+
 	//  All sounds.
-	this.sounds = null;
+	this.player;
+	this.isMute = false;
+//	this.sounds = null;
 
-	this.sourceSound;
+//	this.sourceSound;
 
-	this.playMusiqueGameOver = false;
+//	this.playMusiqueGameOver = false;
 	this.playmusic = false;
+
+	//starfield Start or not
+	this.starfieldStart = false;
+	this.finishLoading = false;
+
+	//Create the starfield.
+	this.container;
+	this.containerfps;
+	this.starfield;
+
 }
 
 /******CLASS METHODS FOR GAME CLASS******/
@@ -137,7 +153,7 @@ Game.prototype.currentState = function() {
 Game.prototype.start = function() {
 
 	//  Move into the 'welcome' state.
-	this.moveToState(new LoadingGameState());
+	this.moveToState(new LoadingGameChatState());
 
 	//  Set the game variables.
 	this.lives = 3; // We set the number of lives to three.
@@ -168,6 +184,23 @@ Game.prototype.start = function() {
 			if(currentState.draw) {
 				currentState.draw(game, dt, ctx);
 			}
+			// If the game is loading, display the image for the loading.
+			if(!game.finishLoading){
+				var body = document.querySelector('body');
+				body.style.backgroundImage = 'url("images/Raystorm_Loading.jpg")';
+				body.style.backgroundRepeat = 'no-repeat';
+				body.style.backgroundSize = 'cover';
+			}
+			if(!game.starfieldStart && game.finishLoading){
+				game.starfieldStart =true;//Start starfield
+				//Create the starfield.
+				game.container = document.getElementById('starfield');
+				game.containerfps = document.getElementById('fps');
+				game.starfield = new Starfield();
+				game.starfield.initialise(game.container, game.containerfps);
+				game.starfield.start();
+
+			}
 		}
 		this.intervalId = requestAnimationFrame(animationLoop);
 	};
@@ -182,12 +215,31 @@ Game.prototype.mute = function(mute) {
 
 	//  If we've been told to mute, mute.
 	if(mute === true) {
-		this.sounds.mute = true;
+		//this.sounds.mute = true;
+		for(var idPlayer=1;idPlayer<=12; idPlayer++){
+			var player = document.querySelector('#audioPlayer' + idPlayer);
+			player.volume = 1;
+		}
+		for(var idPlayer=1;idPlayer<=6; idPlayer++){
+			var player = document.querySelector('#Sounds' + idPlayer);
+			player.volume = 1;
+		}
+		this.isMute = false;
+
 	} else if (mute === false) {
-		this.sounds.mute = false;
+		//this.sounds.mute = false;
+		for(idPlayer=1;idPlayer<=12; idPlayer++){
+			var player = document.querySelector('#audioPlayer' + idPlayer);
+			player.volume = 0;
+		}
+		for(var idPlayer=1;idPlayer<=6; idPlayer++){
+			var player = document.querySelector('#Sounds' + idPlayer);
+			player.volume = 0;
+		}
+		this.isMute = true;
 	} else {
 		// Toggle mute instead...
-		this.sounds.mute = this.sounds.mute ? false : true;
+		//this.sounds.mute = this.sounds.mute ? false : true;
 	}
 };
 
@@ -239,45 +291,45 @@ Game.prototype.keyUp = function(keyCode) {
 	}
 };
 
-//Creates an instance of the LoadingGameState class. The loading is important to have the time to load all the musics.
-function LoadingGameState() {
+//Creates an instance of the LoadingGameChatState class. The loading is important to have the time to load all the musics.
+function LoadingGameChatState() {
 
 }
 
-LoadingGameState.prototype.enter = function(game) {
-	// Create and load the sounds.
-	game.sounds = new Sounds();
-	game.sounds.init();
-	game.sounds.loadSound('shoot', 'sounds/shoot.wav');
-	game.sounds.loadSound('bang', 'sounds/bang.wav');
-	game.sounds.loadSound('explosion', 'sounds/explosion.wav');
-	game.sounds.loadSound('Game_Over', 'sounds/Game_Over.mp3');
-	game.sounds.loadSound('bonus_attack', 'sounds/bonus_attack.m4a');
-	game.sounds.loadSound('Aquarium', 'sounds/Aquarium.mp3');
-	game.sounds.loadSound('Catharsis', 'sounds/Catharsis.mp3');
-	game.sounds.loadSound('Cycloid', 'sounds/Cycloid.mp3');
-	game.sounds.loadSound('DeadAir', 'sounds/DeadAir.mp3');
-	game.sounds.loadSound('GeometricCity', 'sounds/GeometricCity.mp3');
-	game.sounds.loadSound('Intolerance', 'sounds/Intolerance.mp3');
-	game.sounds.loadSound('Luminescence', 'sounds/Luminescence.mp3');
-	game.sounds.loadSound('Metaphar', 'sounds/Metaphar.mp3');
-	game.sounds.loadSound('MuddlingThrough', 'sounds/MuddlingThrough.mp3');
-	game.sounds.loadSound('Ooparts', 'sounds/Ooparts.mp3');
-	game.sounds.loadSound('SlaughterHour', 'sounds/SlaughterHour.mp3');
-	game.sounds.loadSound('Toxoplasma', 'sounds/Toxoplasma.mp3');
+LoadingGameChatState.prototype.enter = function(game) {
+//	// Create and load the sounds.
+//	game.sounds = new Sounds();
+//	game.sounds.init();
+//	game.sounds.loadSound('shoot', 'sounds/shoot.wav');
+//	game.sounds.loadSound('bang', 'sounds/bang.wav');
+//	game.sounds.loadSound('explosion', 'sounds/explosion.wav');
+//	game.sounds.loadSound('Game_Over', 'sounds/Game_Over.mp3');
+//	game.sounds.loadSound('bonus_attack', 'sounds/bonus_attack.m4a');
+//	game.sounds.loadSound('Aquarium', 'sounds/Aquarium.mp3');
+//	game.sounds.loadSound('Catharsis', 'sounds/Catharsis.mp3');
+//	game.sounds.loadSound('Cycloid', 'sounds/Cycloid.mp3');
+//	game.sounds.loadSound('DeadAir', 'sounds/DeadAir.mp3');
+//	game.sounds.loadSound('GeometricCity', 'sounds/GeometricCity.mp3');
+//	game.sounds.loadSound('Intolerance', 'sounds/Intolerance.mp3');
+//	game.sounds.loadSound('Luminescence', 'sounds/Luminescence.mp3');
+//	game.sounds.loadSound('Metaphar', 'sounds/Metaphar.mp3');
+//	game.sounds.loadSound('MuddlingThrough', 'sounds/MuddlingThrough.mp3');
+//	game.sounds.loadSound('Ooparts', 'sounds/Ooparts.mp3');
+//	game.sounds.loadSound('SlaughterHour', 'sounds/SlaughterHour.mp3');
+//	game.sounds.loadSound('Toxoplasma', 'sounds/Toxoplasma.mp3');
 };
 
-LoadingGameState.prototype.update = function (game, dt) {
+LoadingGameChatState.prototype.update = function (game, dt) {
 
 	// gamepad
 	updateGamePadStatus();
 	// After 5 seconds, move to welcome page.
-	setTimeout(function(){game.moveToState(new WelcomeState());}, 5000); // We must wait a few second to have the time to load all the sounds.
+	setTimeout(function(){game.moveToState(new LoadingGameSoundsState());}, 2000); // We must wait a few second to have the time to load all the sounds.
 
 };
 
 
-LoadingGameState.prototype.draw = function(game, dt, ctx) {
+LoadingGameChatState.prototype.draw = function(game, dt, ctx) {
 
 	//  Clear the background.
 	ctx.clearRect(0, 0, game.width, game.height);
@@ -292,11 +344,110 @@ LoadingGameState.prototype.draw = function(game, dt, ctx) {
 	ctx.fillText("Loading...", game.width / 2, game.height/2 - 40);
 	ctx.font="16px Arial";
 
-	ctx.fillText("Please wait during a few seconds.", game.width / 2, game.height/2); 
+	ctx.fillText("Loading Chat. Please wait during a few seconds.", game.width / 2, game.height/2); 
 //	battleshipImg = new Image();
 //	battleshipImg.src = getLinkShip(game.numberShip);
 //	ctx.drawImage(battleshipImg, game.width / 2, game.height/2 + 30,60, 60);
 };
+
+
+//Creates an instance of the LoadingGameChatState class. The loading is important to have the time to load all the musics.
+function LoadingGameSoundsState() {
+
+}
+var maxprogress = 100;   // total à atteindre
+var actualprogress = 0;  // valeur courante
+
+LoadingGameSoundsState.prototype.enter = function(game) {
+	var audio = document.getElementById('audio');
+	audio.innerHTML = '<audio id="audioPlayer1"> <source src="sounds/Aquarium.mp3"> </audio> <audio id="audioPlayer2"> <source src="sounds/Catharsis.mp3"> </audio> <audio id="audioPlayer3"><source src="sounds/Cycloid.mp3"> </audio> <audio id="audioPlayer4"> <source src="sounds/DeadAir.mp3"> </audio> <audio id="audioPlayer5"> <source src="sounds/GeometricCity.mp3"> </audio> <audio id="audioPlayer6"> <source src="sounds/Intolerance.mp3"> </audio> <audio id="audioPlayer7"> <source src="sounds/Luminescence.mp3"> </audio> <audio id="audioPlayer8"> <source src="sounds/Metaphar.mp3"> </audio> <audio id="audioPlayer9"> <source src="sounds/MuddlingThrough.mp3"> </audio> <audio id="audioPlayer10"> <source src="sounds/Ooparts.mp3"> </audio> <audio id="audioPlayer11"> 	<source src="sounds/SlaughterHour.mp3"> </audio> <audio id="audioPlayer12"> <source src="sounds/Toxoplasma.mp3"> </audio> <audio id="Sounds1"><source src="sounds/bang.wav"></audio> <audio id="Sounds2"><source src="sounds/bonus_attack.m4a"></audio> <audio id="Sounds3"><source src="sounds/explosion.wav"></audio> <audio id="Sounds4"><source src="sounds/Game_Over.mp3"></audio> <audio id="Sounds5"><source src="sounds/invaderkilled.wav"></audio> <audio id="Sounds6"><source src="sounds/shoot.wav"></audio>';
+
+//	// Create and load the sounds.
+//	game.sounds = new Sounds();
+//	game.sounds.init();
+//	game.sounds.loadSound('shoot', 'sounds/shoot.wav');
+//	game.sounds.loadSound('bang', 'sounds/bang.wav');
+//	game.sounds.loadSound('explosion', 'sounds/explosion.wav');
+//	game.sounds.loadSound('Game_Over', 'sounds/Game_Over.mp3');
+//	game.sounds.loadSound('bonus_attack', 'sounds/bonus_attack.m4a');
+//	game.sounds.loadSound('Aquarium', 'sounds/Aquarium.mp3');
+//	game.sounds.loadSound('Catharsis', 'sounds/Catharsis.mp3');
+//	game.sounds.loadSound('Cycloid', 'sounds/Cycloid.mp3');
+//	game.sounds.loadSound('DeadAir', 'sounds/DeadAir.mp3');
+//	game.sounds.loadSound('GeometricCity', 'sounds/GeometricCity.mp3');
+//	game.sounds.loadSound('Intolerance', 'sounds/Intolerance.mp3');
+//	game.sounds.loadSound('Luminescence', 'sounds/Luminescence.mp3');
+//	game.sounds.loadSound('Metaphar', 'sounds/Metaphar.mp3');
+//	game.sounds.loadSound('MuddlingThrough', 'sounds/MuddlingThrough.mp3');
+//	game.sounds.loadSound('Ooparts', 'sounds/Ooparts.mp3');
+//	game.sounds.loadSound('SlaughterHour', 'sounds/SlaughterHour.mp3');
+//	game.sounds.loadSound('Toxoplasma', 'sounds/Toxoplasma.mp3');
+
+
+	var progress = document.getElementById('progress');
+	progress.innerHTML = '<progress value="0" max="100" class="progress-bar blue"></progress>';
+	var progressnum = document.getElementById('progressnum');
+	progressnum.innerHTML = '0%';
+	
+	// After 5 seconds, move to welcome page.
+	setTimeout(function(){
+		var progress = document.getElementById('progress');
+		progress.innerHTML = '';
+		var progressnum = document.getElementById('progressnum');
+		progressnum.innerHTML = '';
+		game.moveToState(new WelcomeState());}, 7000); // We must wait a few second to have the time to load all the sounds.
+
+}	  
+
+
+
+LoadingGameSoundsState.prototype.update = function (game, dt) {
+
+	// gamepad
+	updateGamePadStatus();
+
+	var progressnum = document.getElementById("progressnum");
+	var progress = document.querySelector("progress");
+	if(actualprogress != maxprogress){
+		actualprogress += 1;
+	}
+	progress.setAttribute('value', actualprogress);
+	progressnum.innerHTML = actualprogress +"%";
+
+
+
+//	// After 5 seconds, move to welcome page.
+//	setTimeout(function(){
+//		var progress = document.getElementById('progress');
+//		progress.innerHTML = '';
+//		var progressnum = document.getElementById('progressnum');
+//		progressnum.innerHTML = '';
+//		game.moveToState(new WelcomeState());}, 7000); // We must wait a few second to have the time to load all the sounds.
+
+};
+
+
+LoadingGameSoundsState.prototype.draw = function(game, dt, ctx) {
+
+	//  Clear the background.
+	ctx.clearRect(0, 0, game.width, game.height);
+
+	ctx.font="30px Arial";
+	ctx.fillStyle = '#ffffff';
+	ctx.textBaseline="center"; 
+	ctx.textAlign="center";
+//	battleshipImg = new Image();
+//	battleshipImg.src = 'images/titleRaystorm.png';
+//	ctx.drawImage(battleshipImg, game.width / 2-300, game.height/2 - 210, 600, 200);
+	ctx.fillText("Loading...", game.width / 2, game.height/2 - 40);
+	ctx.font="16px Arial";
+
+	ctx.fillText("Loading sounds and musics. Please wait during a few seconds.", game.width / 2, game.height/2); 
+//	battleshipImg = new Image();
+//	battleshipImg.src = getLinkShip(game.numberShip);
+//	ctx.drawImage(battleshipImg, game.width / 2, game.height/2 + 30,60, 60);
+};
+
 
 //Creates an instance of the WelcomeState class.
 function WelcomeState() {
@@ -307,16 +458,20 @@ function WelcomeState() {
 
 WelcomeState.prototype.enter = function(game) {
 
+	game.player = document.querySelector('#audioPlayer10');
+	game.player.play();
+	game.finishLoading = true;
+
 };
 
 WelcomeState.prototype.update = function (game, dt) {
 	//play music
-	if(!game.playmusic){
-		game.playmusic = true;
-		game.sounds.playSound('Aquarium');
-		//setTimeout(function(){game.sounds.playSound('Aquarium');}, 5000); //We must wait a few second to have the time to load all the sounds.
-		//console.log("test");
-	}
+//	if(!game.playmusic){
+//	game.playmusic = true;
+//	game.sounds.playSound('Aquarium');
+//	//setTimeout(function(){game.sounds.playSound('Aquarium');}, 5000); //We must wait a few second to have the time to load all the sounds.
+//	//console.log("test");
+//	}
 
 
 	// gamepad
@@ -327,9 +482,14 @@ WelcomeState.prototype.update = function (game, dt) {
 		game.level = 1;
 		game.score = 0;
 		game.lives = 3;
-		game.sounds.StopSound();
-		game.playmusic = false;
-		//console.log("stop");
+
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		game.player.currentTime = 0; // Put the music at the beginning. 
+//		game.sounds.StopSound();
+//		game.playmusic = false;
+//		//console.log("stop");
+
 		game.moveToState(new LevelIntroState(game.level));
 		game.PressKeyToContinue = false;
 	}
@@ -364,9 +524,14 @@ WelcomeState.prototype.keyDown = function(game, keyCode) {
 		game.level = 1;
 		game.score = 0;
 		game.lives = 3;
-		game.sounds.StopSound();
-		game.playmusic = false;
-		console.log("stop");
+
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		game.player.currentTime = 0; // Put the music at the beginning. 
+//		game.sounds.StopSound();
+//		game.playmusic = false;
+//		//console.log("stop");
+
 		game.moveToState(new LevelIntroState(game.level));
 	}
 };
@@ -376,48 +541,48 @@ Level Intro State class
 
 The Level Intro state shows a 'Level X' message and
 a countdown for the level.
-*/
+ */
 function LevelIntroState(level) {
-this.level = level;
-this.countdownMessage = "3";
+	this.level = level;
+	this.countdownMessage = "3";
 }
 
 /******CLASS METHODS FOR LEVELINTROSTATE CLASS******/
 
 LevelIntroState.prototype.update = function(game, dt) {
 
-//  Update the countdown.
-if(this.countdown === undefined) {
-	this.countdown = 3; // countdown from 3 secs
-}
-this.countdown -= dt;
+//	Update the countdown.
+	if(this.countdown === undefined) {
+		this.countdown = 3; // countdown from 3 secs
+	}
+	this.countdown -= dt;
 
-if(this.countdown < 2) { 
-	this.countdownMessage = "2"; 
-}
-if(this.countdown < 1) { 
-	this.countdownMessage = "1"; 
-} 
-if(this.countdown <= 0) {
-	//  Move to the next level, popping this state.
-	game.moveToState(new PlayState(game.config, this.level));
-}
+	if(this.countdown < 2) { 
+		this.countdownMessage = "2"; 
+	}
+	if(this.countdown < 1) { 
+		this.countdownMessage = "1"; 
+	} 
+	if(this.countdown <= 0) {
+		//  Move to the next level, popping this state.
+		game.moveToState(new PlayState(game.config, this.level));
+	}
 
 };
 
 LevelIntroState.prototype.draw = function(game, dt, ctx) {
 
-//  Clear the background.
-ctx.clearRect(0, 0, game.width, game.height);
+//	Clear the background.
+	ctx.clearRect(0, 0, game.width, game.height);
 
-ctx.font="36px Arial";
-ctx.fillStyle = '#ffffff';
-ctx.textBaseline="middle"; 
-ctx.textAlign="center"; 
-ctx.fillText("Level " + this.level, game.width / 2, game.height/2);
-ctx.font="24px Arial";
-ctx.fillText("Ready in " + this.countdownMessage, game.width / 2, game.height/2 + 36);      
-return;
+	ctx.font="36px Arial";
+	ctx.fillStyle = '#ffffff';
+	ctx.textBaseline="middle"; 
+	ctx.textAlign="center"; 
+	ctx.fillText("Level " + this.level, game.width / 2, game.height/2);
+	ctx.font="24px Arial";
+	ctx.fillText("Ready in " + this.countdownMessage, game.width / 2, game.height/2 + 36);      
+	return;
 };
 
 
@@ -440,6 +605,7 @@ function PlayState(config, level) {
 	this.rockets = [];
 	this.bombs = [];
 	this.powerItems = [];
+	this.shipShieldItems = [];
 }
 
 /******CLASS METHODS FOR PLAYSTATE CLASS******/
@@ -460,6 +626,7 @@ PlayState.prototype.enter = function(game) {
 	this.invaderInitialVelocity = this.config.invaderInitialVelocity + (levelMultiplier * this.config.invaderInitialVelocity);
 	this.bombRate = this.config.bombRate + (levelMultiplier * this.config.bombRate);
 	this.powerItemRate = this.config.powerItemRate;
+	this.shipShieldItemRate = this.config.shipShieldItemRate;
 	this.bombMinVelocity = this.config.bombMinVelocity + (levelMultiplier * this.config.bombMinVelocity);
 	this.bombMaxVelocity = this.config.bombMaxVelocity + (levelMultiplier * this.config.bombMaxVelocity);
 
@@ -482,6 +649,17 @@ PlayState.prototype.enter = function(game) {
 };
 
 PlayState.prototype.update = function(game, dt) {
+
+	//play music
+	if(!game.playmusic){
+		//var nbMusic = parseInt(getRandomArbitrary(1, 13));
+		var music = chooseLevelMusic(game)
+		// Play music
+		game.player = document.querySelector(music);
+		game.player.play();
+		game.playmusic = true;
+	}
+
 	// gamepad
 	updateGamePadStatus();
 	//  If the left or right arrow keys are pressed, move
@@ -505,6 +683,10 @@ PlayState.prototype.update = function(game, dt) {
 		game.isFireRocket = false;
 	}
 	if(game.isPause){
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		//game.player.currentTime = 0; // Put the music at the beginning. 
+
 		game.isPause = false;
 		//Push the pause state.
 		game.pushState(new PauseState());
@@ -544,6 +726,17 @@ PlayState.prototype.update = function(game, dt) {
 		//  If the powerItem has gone off the screen remove it.
 		if(powerItem.y > this.height) {
 			this.powerItems.splice(i--, 1);
+		}
+	}
+
+//	Move each shipShieldItems.
+	for(var i=0; i<this.shipShieldItems.length; i++) {
+		var shipShieldItem = this.shipShieldItems[i];
+		shipShieldItem.y += dt * shipShieldItem.velocity;
+
+		//  If the powerItem has gone off the screen remove it.
+		if(shipShieldItem.y > this.height) {
+			this.shipShieldItems.splice(i--, 1);
 		}
 	}
 
@@ -629,7 +822,7 @@ PlayState.prototype.update = function(game, dt) {
 		}
 		if(bang) {
 			this.invaders.splice(i--, 1);
-			game.sounds.playSound('bang');
+			//game.sounds.playSound('bang');
 		}
 	}
 
@@ -669,14 +862,35 @@ PlayState.prototype.update = function(game, dt) {
 		}
 	}
 
+//	Give each front rank invader a chance to drop a shipShieldItems.
+	for(var i=0; i<this.config.invaderFiles; i++) {
+		var invader = frontRankInvaders[i];
+		if(!invader) continue;
+		var chance = this.shipShieldItemRate * dt;
+		if(chance > Math.random()) {
+			//  Fire!
+			this.shipShieldItems.push(new ShieldItem(invader.x, invader.y + invader.height / 2, 
+					this.bombMinVelocity + Math.random()*(this.bombMaxVelocity - this.bombMinVelocity)));
+		}
+	}
+
 	//  Check for bomb/ship collisions.
 	for(var i=0; i<this.bombs.length; i++) {
 		var bomb = this.bombs[i];
-		if(bomb.x >= (this.ship.x - this.ship.width/2) && bomb.x <= (this.ship.x + this.ship.width/2) &&
+		if(game.hasShield){
+			if(bomb.x >= (this.ship.x - this.ship.width/2)-20 && bomb.x <= (this.ship.x + this.ship.width/2) +20 &&
+					bomb.y >= (this.ship.y - this.ship.height/2) -30 && bomb.y <= (this.ship.y + this.ship.height/2) +30) {
+				this.bombs.splice(i--, 1);
+			}
+		}
+		else if(bomb.x >= (this.ship.x - this.ship.width/2) && bomb.x <= (this.ship.x + this.ship.width/2) &&
 				bomb.y >= (this.ship.y - this.ship.height/2) && bomb.y <= (this.ship.y + this.ship.height/2)) {
 			this.bombs.splice(i--, 1);
-			game.lives--;
-			game.sounds.playSound('explosion');
+			// If the ship doesn't have any shield, decrease the life.
+			if(!game.hasShield){
+				game.lives--;
+			}
+			//game.sounds.playSound('explosion');
 		}
 
 	}
@@ -691,7 +905,24 @@ PlayState.prototype.update = function(game, dt) {
 			game.config.rocketMaxFireRate=5;
 			setTimeout(function () {game.config.rocketMaxFireRate=2;}, 8000); // After 8 seconds, set rocketMaxFireRate =2. 
 			//game.lives++;
-			game.sounds.playSound('bonus_attack');
+			//game.sounds.playSound('bonus_attack');
+		}
+
+	}
+
+//	Check for shipShieldItem/ship collisions.
+	for(var i=0; i<this.shipShieldItems.length; i++) {
+		var shipShieldItem = this.shipShieldItems[i];
+		if(shipShieldItem.x >= (this.ship.x - this.ship.width/2) && shipShieldItem.x <= (this.ship.x + this.ship.width/2) &&
+				shipShieldItem.y >= (this.ship.y - this.ship.height/2) && shipShieldItem.y <= (this.ship.y + this.ship.height/2)) {
+			this.shipShieldItems.splice(i--, 1);
+			//get some powers
+			game.hasShield = true;
+			setTimeout(function () {game.hasShield = false; game.shieldRed = false;}, 8000); // After 8 seconds, set hasShield to false (the ship doesn't have shield any more). 
+			setTimeout(function () {game.shieldRed = true;}, 6000); // After 8 seconds, set hasShield to false (the ship doesn't have shield any more). 
+
+			//game.lives++;
+			//game.sounds.playSound('bonus_attack');
 		}
 
 	}
@@ -705,12 +936,16 @@ PlayState.prototype.update = function(game, dt) {
 				(invader.y - invader.height/2) < (this.ship.y + this.ship.height/2)) {
 			//  Dead by collision!
 			game.lives = 0;
-			game.sounds.playSound('explosion');
+			//game.sounds.playSound('explosion');
 		}
 	}
 
 	//  Check for failure
 	if(game.lives <= 0) {
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		game.player.currentTime = 0; // Put the music at the beginning. 
+		game.playmusic = false;
 		game.moveToState(new GameOverState());
 	}
 
@@ -718,15 +953,14 @@ PlayState.prototype.update = function(game, dt) {
 	if(this.invaders.length === 0) {
 		game.score += this.level * 50;
 		game.level += 1;
+
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		game.player.currentTime = 0; // Put the music at the beginning. 
+		game.playmusic = false;
 		game.moveToState(new LevelIntroState(game.level));
 	}
 
-
-//	//play music
-//	if(!game.playmusic){
-//	game.sounds.playSound(chooseRandomMusic());
-//	game.playmusic = true;
-//	}
 };
 
 PlayState.prototype.draw = function(game, dt, ctx) {
@@ -736,8 +970,20 @@ PlayState.prototype.draw = function(game, dt, ctx) {
 
 	//  Draw ship.
 	battleshipImg = new Image();
-	battleshipImg.src = getLinkShip(game.numberShip);;
+	battleshipImg.src = getLinkShip(game.numberShip);
 	ctx.drawImage(battleshipImg, this.ship.x - (this.ship.width / 2), this.ship.y - (this.ship.height / 2), this.ship.width, this.ship.height);
+
+	if(game.hasShield && (!game.shieldRed)){
+		shield = new Image();
+		shield.src = 'images/MagicShield.png';
+		ctx.drawImage(shield, this.ship.x - (this.ship.width /2 ) -95, this.ship.y - (this.ship.height / 2)-30, this.ship.width+200, this.ship.height+100);
+	}
+	else if (game.hasShield && game.shieldRed){
+		shield = new Image();
+		shield.src = 'images/Magic_Shield_Red.png';
+		ctx.drawImage(shield, this.ship.x - (this.ship.width /2 ) -98, this.ship.y - (this.ship.height / 2)-75, this.ship.width+200, this.ship.height+100);
+
+	}
 
 	//  Draw invaders.
 	for(var i=0; i<this.invaders.length; i++) {
@@ -768,6 +1014,14 @@ PlayState.prototype.draw = function(game, dt, ctx) {
 		invaderImg = new Image();
 		invaderImg.src = 'images/etoileAnime9.gif';
 		ctx.drawImage(invaderImg, powerItem.x - 2, powerItem.y - 2, 25, 20);
+	}
+
+	//  Draw item super powers shield.
+	for(var i=0; i<this.shipShieldItems.length; i++) {
+		var shipShieldItem = this.shipShieldItems[i];
+		invaderImg = new Image();
+		invaderImg.src = 'images/etoileAnime10.png';
+		ctx.drawImage(invaderImg, shipShieldItem.x - 2, shipShieldItem.y - 2, 25, 20);
 	}
 
 
@@ -802,6 +1056,10 @@ PlayState.prototype.keyDown = function(game, keyCode) {
 	}
 	//If user push the p touch
 	if(keyCode == 80) {
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		//game.player.currentTime = 0; // Put the music at the beginning. 
+
 		//Push the pause state.
 		game.pushState(new PauseState());
 	}
@@ -821,7 +1079,7 @@ PlayState.prototype.fireRocket = function() {
 		this.lastRocketTime = (new Date()).valueOf();
 
 		//  Play the 'shoot' sound.
-		game.sounds.playSound('shoot');
+		//game.sounds.playSound('shoot');
 	}
 };
 
@@ -829,12 +1087,24 @@ function PauseState() {
 
 }
 
+PauseState.prototype.enter = function(game) {
+	game.player = document.querySelector('#audioPlayer2');
+	game.player.play();
+
+};
+
 PauseState.prototype.keyDown = function(game, keyCode) {
 
 	//If user push the p touch
 	if(keyCode == 80) {
-		game.sounds.StopSound();// Stop the music of pause.
-		game.playMusiqueGameOver = false;
+//		game.sounds.StopSound();// Stop the music of pause.
+//		game.playMusiqueGameOver = false;
+
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		game.player.currentTime = 0; // Put the music at the beginning. 
+
+		game.playmusic = false; // Variable to play the music of the main game.
 		//  Pop the pause state.
 		game.popState();
 	}
@@ -842,17 +1112,21 @@ PauseState.prototype.keyDown = function(game, keyCode) {
 
 PauseState.prototype.update = function(game, dt) {
 
-	if(!game.playMusiqueGameOver){
-		game.sounds.playSound(chooseRandomMusic());
-		game.playMusiqueGameOver = true;
-	}
+//	if(!game.playMusiqueGameOver){
+//	game.sounds.playSound(chooseRandomMusic());
+//	game.playMusiqueGameOver = true;
+//	}
 	// gamepad
 	updateGamePadStatus();
 
 	if(game.QuitPause) {
-		game.sounds.StopSound();//Stop the music of Game Over
-		game.playMusiqueGameOver = false;
+//		game.sounds.StopSound();//Stop the music of Game Over
+//		game.playMusiqueGameOver = false;
 
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		game.player.currentTime = 0; // Put the music at the beginning. 
+		game.playmusic = false; // Variable to play the music of the main game.
 		//  Pop the pause state.
 		game.popState();
 		game.QuitPause = false;
@@ -880,14 +1154,19 @@ function GameOverState() {
 
 }
 
+GameOverState.prototype.enter = function(game) {
+	game.player = document.querySelector('#Sounds4');
+	game.player.play();
+};
+
 /******CLASS METHODS FOR GAMEOVERSTATE CLASS******/
 
 GameOverState.prototype.update = function(game, dt) {
 
-	if(!game.playMusiqueGameOver){
-		game.sounds.playSound('Game_Over');
-		game.playMusiqueGameOver = true;
-	}
+//	if(!game.playMusiqueGameOver){
+//	game.sounds.playSound('Game_Over');
+//	game.playMusiqueGameOver = true;
+//	}
 	game.PressKeyToContinue = false;
 	// gamepad
 	updateGamePadStatus();
@@ -897,8 +1176,13 @@ GameOverState.prototype.update = function(game, dt) {
 		game.lives = 3;
 		game.score = 0;
 		game.level = 1;
-		game.sounds.StopSound();//Stop the music of Game Over
-		game.playMusiqueGameOver = false;
+
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		game.player.currentTime = 0; // Put the music at the beginning. 
+//		game.sounds.StopSound();//Stop the music of Game Over
+//		game.playMusiqueGameOver = false;
+
 		game.moveToState(new LevelIntroState(1));
 	}
 };
@@ -926,8 +1210,13 @@ GameOverState.prototype.keyDown = function(game, keyCode) {
 		game.lives = 3;
 		game.score = 0;
 		game.level = 1;
-		game.sounds.StopSound();//Stop the music of Game Over
-		game.playMusiqueGameOver = false;
+
+		// Stop the music.
+		game.player.pause(); // Put the music in pause.
+		game.player.currentTime = 0; // Put the music at the beginning. 
+//		game.sounds.StopSound();//Stop the music of Game Over
+//		game.playMusiqueGameOver = false;
+
 		game.moveToState(new LevelIntroState(1));
 	}
 };
@@ -983,6 +1272,19 @@ function PowerItem(x, y, velocity) {
 }
 
 /*
+ShieldItem class
+
+Dropped by invaders, they've got position, velocity.
+
+ */
+function ShieldItem(x, y, velocity) {
+	this.x = x;
+	this.y = y;
+	this.velocity = velocity;
+}
+
+
+/*
     Invader class
 
     Invader's have position, type, rank/file and that's about it. 
@@ -1024,80 +1326,80 @@ function GameState(updateProc, drawProc, keyDown, keyUp, enter, leave) {
     them to be played.
 
  */
-function Sounds() {
+//function Sounds() {
 
-	//  The audio context.
-	this.audioContext = null;
+////The audio context.
+//this.audioContext = null;
 
-	//  The actual set of loaded sounds.
-	this.sounds = {};
-}
+////The actual set of loaded sounds.
+//this.sounds = {};
+//}
 
-/******CLASS METHODS FOR SOUNDS CLASS******/
+///******CLASS METHODS FOR SOUNDS CLASS******/
 
-Sounds.prototype.init = function() {
+//Sounds.prototype.init = function() {
 
-	//  Create the audio context, paying attention to webkit browsers.
-	context = window.AudioContext || window.webkitAudioContext;
-	this.audioContext = new context();
-	this.mute = false;
-};
+////Create the audio context, paying attention to webkit browsers.
+//context = window.AudioContext || window.webkitAudioContext;
+//this.audioContext = new context();
+//this.mute = false;
+//};
 
-Sounds.prototype.loadSound = function(name, url) {
+//Sounds.prototype.loadSound = function(name, url) {
 
-	//  Reference to ourselves for closures.
-	var self = this;
+////Reference to ourselves for closures.
+//var self = this;
 
-	//  Create an entry in the sounds object.
-	this.sounds[name] = null;
+////Create an entry in the sounds object.
+//this.sounds[name] = null;
 
-	//  Create an asynchronous request for the sound.
-	var req = new XMLHttpRequest();
-	req.open('GET', url, true);
-	req.responseType = 'arraybuffer';
-	req.onload = function() {
-		self.audioContext.decodeAudioData(req.response, function(buffer) {
-			self.sounds[name] = {buffer: buffer};
-		});
-	};
-	try {
-		req.send();
-	} catch(e) {
-		console.log("An exception occured getting sound the sound " + name + " this might be " +
-		"because the page is running from the file system, not a webserver.");
-		console.log(e);
-	}
-};
+////Create an asynchronous request for the sound.
+//var req = new XMLHttpRequest();
+//req.open('GET', url, true);
+//req.responseType = 'arraybuffer';
+//req.onload = function() {
+//self.audioContext.decodeAudioData(req.response, function(buffer) {
+//self.sounds[name] = {buffer: buffer};
+//});
+//};
+//try {
+//req.send();
+//} catch(e) {
+//console.log("An exception occured getting sound the sound " + name + " this might be " +
+//"because the page is running from the file system, not a webserver.");
+//console.log(e);
+//}
+//};
 
-Sounds.prototype.playSound = function(name) {
+//Sounds.prototype.playSound = function(name) {
 
-	//  If we've not got the sound, don't bother playing it.
-	if(this.sounds[name] === undefined || this.sounds[name] === null || this.mute === true) {
-		if(this.sounds[name] === undefined){
-			console.log("not sound: sounds[name] === undefined");
-		}
-		if(this.sounds[name] === null){
-			console.log("not sound: sounds[name] === null");
-		}
-		if(this.mute === true){
-			console.log("not sound: mute");
-		}
-		//console.log("not sound");
-		return;
-	}
+////If we've not got the sound, don't bother playing it.
+//if(this.sounds[name] === undefined || this.sounds[name] === null || this.mute === true) {
+//if(this.sounds[name] === undefined){
+//console.log("not sound: sounds[name] === undefined");
+//}
+//if(this.sounds[name] === null){
+//console.log("not sound: sounds[name] === null");
+//}
+//if(this.mute === true){
+//console.log("not sound: mute");
+//}
+////console.log("not sound");
+//return;
+//}
 
-	//  Create a sound source, set the buffer, connect to the speakers and
-	//  play the sound.
-	this.sourceSound = this.audioContext.createBufferSource();
-	this.sourceSound.buffer = this.sounds[name].buffer;
-	this.sourceSound.connect(this.audioContext.destination);
-	this.sourceSound.start(0);
+////Create a sound source, set the buffer, connect to the speakers and
+////play the sound.
+//this.sourceSound = this.audioContext.createBufferSource();
+//this.sourceSound.buffer = this.sounds[name].buffer;
+//this.sourceSound.connect(this.audioContext.destination);
+//this.sourceSound.start(0);
 
-};
+//};
 
-Sounds.prototype.StopSound = function() {
-	this.sourceSound.stop();
-};
+//Sounds.prototype.StopSound = function() {
+//this.sourceSound.stop();
+//};
 
 //----------------------------------
 //gamepad utility code
@@ -1241,62 +1543,114 @@ function getRandomArbitrary(min, max) {
 }
 
 //On renvoie un string qui indique le nom d'une musique de maniere aléatoire
-function chooseRandomMusic() {
-	var pathMusic;
-	var numberHazard=parseInt(getRandomArbitrary(0,11));
+//function chooseRandomMusic() {
+//var pathMusic;
+//var numberHazard=parseInt(getRandomArbitrary(0,11));
+//
+//switch (numberHazard) {
+//case 0:
+//pathMusic='Aquarium'
+//break;
+//
+//case 1:
+//pathMusic='Catharsis'
+//break;
+//
+//case 2:
+//pathMusic='Cycloid'
+//break;
+//
+//case 3:
+//pathMusic='DeadAir'
+//break;
+//
+//case 4:
+//pathMusic='GeometricCity'
+//break;
+//
+//case 5:
+//pathMusic='Intolerance'
+//break;
+//
+//case 6:
+//pathMusic='Luminescence'
+//break;
+//
+//case 7:
+//pathMusic='Metaphar'
+//break;
+//
+//case 8:
+//pathMusic='MuddlingThrough'
+//break;
+//
+//case 9:
+//pathMusic='Ooparts'
+//break;
+//
+//case 10:
+//pathMusic='SlaughterHour'
+//break;
+//
+//case 11:
+//pathMusic='Toxoplasma'
+//break;
+//
+//default:
+//pathMusic='Game_Over'
+//break;
+//}
+//return pathMusic;
+//}
 
-	switch (numberHazard) {
-	case 0:
-		pathMusic='Aquarium'
-			break;
+function chooseLevelMusic(game) {
+var pathMusic;
 
-	case 1:
-		pathMusic='Catharsis'
-			break;
+switch (game.level) {
+case 1:
+pathMusic='#audioPlayer5';
+break;
 
-	case 2:
-		pathMusic='Cycloid'
-			break;
+case 2:
+pathMusic='#audioPlayer1';
+break;
 
-	case 3:
-		pathMusic='DeadAir'
-			break;
+case 3:
+pathMusic='#audioPlayer9';
+break;
 
-	case 4:
-		pathMusic='GeometricCity'
-			break;
+case 4:
+pathMusic='#audioPlayer2';
+break;
 
-	case 5:
-		pathMusic='Intolerance'
-			break;
+case 5:
+pathMusic='#audioPlayer7';
+break;
 
-	case 6:
-		pathMusic='Luminescence'
-			break;
+case 6:
+pathMusic='#audioPlayer12';
+break;
 
-	case 7:
-		pathMusic='Metaphar'
-			break;
+case 7:
+pathMusic='#audioPlayer11';
+break;
 
-	case 8:
-		pathMusic='MuddlingThrough'
-			break;
+case 8:
+pathMusic='#audioPlayer6';
+break;
 
-	case 9:
-		pathMusic='Ooparts'
-			break;
+case 9:
+pathMusic='#audioPlayer3';
+break;
 
-	case 10:
-		pathMusic='SlaughterHour'
-			break;
+case 10:
+pathMusic='#audioPlayer8';
+break;
 
-	case 11:
-		pathMusic='Toxoplasma'
-			break;
-
-	default:
-		pathMusic='Game_Over'
-			break;
-	}
-	return pathMusic;
+default:
+var nbMusic = parseInt(getRandomArbitrary(1, 13));
+pathMusic='#audioPlayer'+nbMusic;
+break;
+}
+return pathMusic;
 }

@@ -53,6 +53,16 @@ aside {
 	height: 600px;
 }
 
+.progressbar { 
+    display: flex;
+    justify-content: center;
+    }
+
+.progressnum{
+  display: flex;
+  justify-content: center;
+}
+
 footer {
 	width: 800px;
 	margin-left: auto;

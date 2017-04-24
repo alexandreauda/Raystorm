@@ -10,6 +10,7 @@
 	socket.on('connect', function(){
 		// call the server-side function 'adduser' and send one parameter (value of prompt)
 		socket.emit('adduser', username);
+		document.title = username + ' - ' + document.title; // Display the pseudo in the title of the page.
 	});
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body 

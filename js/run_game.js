@@ -1,12 +1,7 @@
 /**
  * 
  */
-//Create the starfield.
-var container = document.getElementById('starfield');
-var containerfps = document.getElementById('fps');
-var starfield = new Starfield();
-starfield.initialise(container, containerfps);
-starfield.start();
+
 
 //  Setup the canvas.
 var canvas = document.getElementById("gameCanvas");
@@ -21,6 +16,8 @@ game.initialise(canvas);
 
 //  Start the game.
 game.start();
+
+
 
 //  Listen for keyboard events.
 window.addEventListener("keydown", function keydown(e) {
@@ -37,7 +34,7 @@ window.addEventListener("keyup", function keydown(e) {
 });
 
 function toggleMute() {
-	game.mute();
-	document.getElementById("muteLink").innerText = game.sounds.mute ? "unmute"
+	game.mute(game.isMute);
+	document.getElementById("muteLink").innerText = game.isMute ? "unmute"
 			: "mute";
 }

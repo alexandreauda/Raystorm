@@ -19,7 +19,7 @@ function Starfield() {
 	this.asteroid1s = 0;
 	this.asteroid2s = 0;
 	this.asteroid3s = 0;
-	this.randomSpaceObjects = 1;
+	this.randomSpaceObjects = 5;
 	this.intervalId = 0;
 	this.containerDiv = null;
 
@@ -281,7 +281,7 @@ Starfield.prototype.draw = function() {
 	for(var i=0; i<this.galaxie1s.length;i++) {
 		var galaxie1 = this.galaxie1s[i];
 		galaxie1Img = new Image();
-		galaxie1Img.src = 'http://localhost/Raystorm/images/galaxie1.gif';
+		galaxie1Img.src = 'images/galaxie1.gif';
         ctx.drawImage(galaxie1Img, galaxie1.x, galaxie1.y, galaxie1.size+30, galaxie1.size+30);
 	}
 	
@@ -290,7 +290,7 @@ Starfield.prototype.draw = function() {
 	for(var i=0; i<this.galaxies.length;i++) {
 		var galaxie = this.galaxies[i];
 		galaxieImg = new Image();
-		galaxieImg.src = 'http://localhost/Raystorm/images/galaxieAnime.gif';
+		galaxieImg.src = 'images/galaxieAnime.gif';
         ctx.drawImage(galaxieImg, galaxie.x, galaxie.y, galaxie.size+30, galaxie.size+30);
 	}
 	
@@ -316,7 +316,7 @@ Starfield.prototype.draw = function() {
 	for(var i=0; i<this.asteroids.length;i++) {
 		var asteroid = this.asteroids[i];
 		asteroidImg = new Image();
-		asteroidImg.src = 'http://localhost/Raystorm/images/asteroide.png';
+		asteroidImg.src = 'images/asteroide.png';
         ctx.drawImage(asteroidImg, asteroid.x, asteroid.y, asteroid.size+20, asteroid.size+20);
 	}
 	
@@ -325,7 +325,7 @@ Starfield.prototype.draw = function() {
 	for(var i=0; i<this.asteroid1s.length;i++) {
 		var asteroid1 = this.asteroid1s[i];
 		asteroid1Img = new Image();
-		asteroid1Img.src = 'http://localhost/Raystorm/images/asteroide1.png';
+		asteroid1Img.src = 'images/asteroide1.png';
         ctx.drawImage(asteroid1Img, asteroid1.x, asteroid1.y, asteroid1.size+20, asteroid1.size+20);
 	}
 	
@@ -334,7 +334,7 @@ Starfield.prototype.draw = function() {
 	for(var i=0; i<this.asteroid2s.length;i++) {
 		var asteroid2 = this.asteroid2s[i];
 		asteroid2Img = new Image();
-		asteroid2Img.src = 'http://localhost/Raystorm/images/asteroide2.png';
+		asteroid2Img.src = 'images/asteroide2.png';
         ctx.drawImage(asteroid2Img, asteroid2.x, asteroid2.y, asteroid2.size+20, asteroid2.size+20);
 	}
 	
@@ -343,7 +343,7 @@ Starfield.prototype.draw = function() {
 	for(var i=0; i<this.asteroid3s.length;i++) {
 		var asteroid3 = this.asteroid3s[i];
 		asteroid3Img = new Image();
-		asteroid3Img.src = 'http://localhost/Raystorm/images/AsteroideAnime1.gif';
+		asteroid3Img.src = 'images/AsteroideAnime1.gif';
         ctx.drawImage(asteroid3Img, asteroid3.x, asteroid3.y, asteroid3.size+20, asteroid3.size+20);
 	}
 	
@@ -455,284 +455,284 @@ function chooseObject() {
 	
 	switch (numberHazard) {
 		case 0:
-			pathImage='http://localhost/Raystorm/images/planete1.png'
+			pathImage='images/planete1.png'
 			break;
 			
 		case 1:
-			pathImage='http://localhost/Raystorm/images/planete2.png'
+			pathImage='images/planete2.png'
 			break;
 			
 		case 2:
-			pathImage='http://localhost/Raystorm/images/planete3.png'
+			pathImage='images/planete3.png'
 			break;
 			
 		case 3:
-			pathImage='http://localhost/Raystorm/images/planete4.png'
+			pathImage='images/planete4.png'
 			break;
 			
 		case 4:
-			pathImage='http://localhost/Raystorm/images/planete5.png'
+			pathImage='images/planete5.png'
 			break;
 			
 		case 5:
-			pathImage='http://localhost/Raystorm/images/planete6.png'
+			pathImage='images/planete6.png'
 			break;
 			
 		case 6:
-			pathImage='http://localhost/Raystorm/images/planete7.gif'
+			pathImage='images/planete7.gif'
 			break;
 			
 		case 7:
-			pathImage='http://localhost/Raystorm/images/planete8.gif'
+			pathImage='images/planete8.gif'
 			break;
 			
 		case 8:
-			pathImage='http://localhost/Raystorm/images/planete9.png'
+			pathImage='images/planete9.png'
 			break;
 			
 		case 9:
-			pathImage='http://localhost/Raystorm/images/planete10.gif'
+			pathImage='images/planete10.gif'
 			break;
 			
 		case 10:
-			pathImage='http://localhost/Raystorm/images/planeteAnime.gif'
+			pathImage='images/planeteAnime.gif'
 			break;
 			
 		case 11:
-			pathImage='http://localhost/Raystorm/images/satellite.png'
+			pathImage='images/satellite.png'
 			break;
 			
 		case 12:
-			pathImage='http://localhost/Raystorm/images/spacestation.png'
+			pathImage='images/spacestation.png'
 			break;
 			
 		case 13:
-			pathImage='http://localhost/Raystorm/images/asteroide3.png'
+			pathImage='images/asteroide3.png'
 			break;
 			
 		case 14:
-			pathImage='http://localhost/Raystorm/images/asteroide4.png'
+			pathImage='images/asteroide4.png'
 			break;
 		
 		case 15:
-			pathImage='http://localhost/Raystorm/images/asteroide5.png'
+			pathImage='images/asteroide5.png'
 			break;
 			
 		case 16:
-			pathImage='http://localhost/Raystorm/images/asteroide6.png'
+			pathImage='images/asteroide6.png'
 			break;
 			
 		case 17:
-			pathImage='http://localhost/Raystorm/images/asteroide7.png'
+			pathImage='images/asteroide7.png'
 			break;
 			
 		case 18:
-			pathImage='http://localhost/Raystorm/images/asteroide8.png'
+			pathImage='images/asteroide8.png'
 			break;
 			
 		case 19:
-			pathImage='http://localhost/Raystorm/images/asteroide9.png'
+			pathImage='images/asteroide9.png'
 			break;
 			
 		case 20:
-			pathImage='http://localhost/Raystorm/images/asteroide10.png'
+			pathImage='images/asteroide10.png'
 			break;
 			
 		case 21:
-			pathImage='http://localhost/Raystorm/images/asteroide11.png'
+			pathImage='images/asteroide11.png'
 			break;
 			
 		case 22:
-			pathImage='http://localhost/Raystorm/images/planete11.png'
+			pathImage='images/planete11.png'
 			break;
 			
 		case 23:
-			pathImage='http://localhost/Raystorm/images/planete12.png'
+			pathImage='images/planete12.png'
 			break;
 			
 		case 24:
-			pathImage='http://localhost/Raystorm/images/planete13.png'
+			pathImage='images/planete13.png'
 			break;
 			
 		case 25:
-			pathImage='http://localhost/Raystorm/images/planete14.png'
+			pathImage='images/planete14.png'
 			break;
 			
 		case 26:
-			pathImage='http://localhost/Raystorm/images/planete15.png'
+			pathImage='images/planete15.png'
 			break;
 			
 		case 27:
-			pathImage='http://localhost/Raystorm/images/planete16.png'
+			pathImage='images/planete16.png'
 			break;
 			
 		case 28:
-			pathImage='http://localhost/Raystorm/images/planete17.png'
+			pathImage='images/planete17.png'
 			break;
 			
 		case 29:
-			pathImage='http://localhost/Raystorm/images/planete18.png'
+			pathImage='images/planete18.png'
 			break;
 			
 		case 30:
-			pathImage='http://localhost/Raystorm/images/planete19.png'
+			pathImage='images/planete19.png'
 			break;
 			
 		case 31:
-			pathImage='http://localhost/Raystorm/images/planete20.png'
+			pathImage='images/planete20.png'
 			break;
 			
 		case 32:
-			pathImage='http://localhost/Raystorm/images/planete21.png'
+			pathImage='images/planete21.png'
 			break;
 			
 		case 33:
-			pathImage='http://localhost/Raystorm/images/planete22.png'
+			pathImage='images/planete22.png'
 			break;
 			
 		case 34:
-			pathImage='http://localhost/Raystorm/images/planete23.png'
+			pathImage='images/planete23.png'
 			break;
 			
 		case 35:
-			pathImage='http://localhost/Raystorm/images/planete24.png'
+			pathImage='images/planete24.png'
 			break;
 			
 		case 36:
-			pathImage='http://localhost/Raystorm/images/planete25.png'
+			pathImage='images/planete25.png'
 			break;
 			
 		case 37:
-			pathImage='http://localhost/Raystorm/images/planete26.png'
+			pathImage='images/planete26.png'
 			break;
 			
 		case 38:
-			pathImage='http://localhost/Raystorm/images/planete27.png'
+			pathImage='images/planete27.png'
 			break;
 			
 		case 39:
-			pathImage='http://localhost/Raystorm/images/planete28.png'
+			pathImage='images/planete28.png'
 			break;
 			
 		case 40:
-			pathImage='http://localhost/Raystorm/images/satellite1.png'
+			pathImage='images/satellite1.png'
 			break;
 			
 		case 41:
-			pathImage='http://localhost/Raystorm/images/satellite2.png'
+			pathImage='images/satellite2.png'
 			break;
 			
 		case 42:
-			pathImage='http://localhost/Raystorm/images/satellite3.png'
+			pathImage='images/satellite3.png'
 			break;
 			
 		case 43:
-			pathImage='http://localhost/Raystorm/images/planete29.gif'
+			pathImage='images/planete29.gif'
 			break;
 			
 		case 44:
-			pathImage='http://localhost/Raystorm/images/planete30.png'
+			pathImage='images/planete30.png'
 			break;
 			
 		case 45:
-			pathImage='http://localhost/Raystorm/images/planete31.png'
+			pathImage='images/planete31.png'
 			break;
 			
 		case 46:
-			pathImage='http://localhost/Raystorm/images/planete32.png'
+			pathImage='images/planete32.png'
 			break;
 			
 		case 47:
-			pathImage='http://localhost/Raystorm/images/planete33.png'
+			pathImage='images/planete33.png'
 			break;
 			
 		case 48:
-			pathImage='http://localhost/Raystorm/images/planete34.png'
+			pathImage='images/planete34.png'
 			break;
 			
 		case 49:
-			pathImage='http://localhost/Raystorm/images/planete35.png'
+			pathImage='images/planete35.png'
 			break;
 			
 		case 50:
-			pathImage='http://localhost/Raystorm/images/planete36.png'
+			pathImage='images/planete36.png'
 			break;
 			
 		case 51:
-			pathImage='http://localhost/Raystorm/images/planete37.png'
+			pathImage='images/planete37.png'
 			break;
 			
 		case 52:
-			pathImage='http://localhost/Raystorm/images/planete38.png'
+			pathImage='images/planete38.png'
 			break;
 			
 		case 53:
-			pathImage='http://localhost/Raystorm/images/planete39.png'
+			pathImage='images/planete39.png'
 			break;
 			
 		case 54:
-			pathImage='http://localhost/Raystorm/images/planete40.png'
+			pathImage='images/planete40.png'
 			break;
 			
 		case 55:
-			pathImage='http://localhost/Raystorm/images/planete41.png'
+			pathImage='images/planete41.png'
 			break;
 			
 		case 56:
-			pathImage='http://localhost/Raystorm/images/planete42.png'
+			pathImage='images/planete42.png'
 			break;
 			
 		case 57:
-			pathImage='http://localhost/Raystorm/images/planete43.png'
+			pathImage='images/planete43.png'
 			break;
 			
 		case 58:
-			pathImage='http://localhost/Raystorm/images/planete44.png'
+			pathImage='images/planete44.png'
 			break;
 			
 		case 59:
-			pathImage='http://localhost/Raystorm/images/planete45.png'
+			pathImage='images/planete45.png'
 			break;
 			
 		case 60:
-			pathImage='http://localhost/Raystorm/images/planete46.png'
+			pathImage='images/planete46.png'
 			break;
 			
 		case 61:
-			pathImage='http://localhost/Raystorm/images/planeteAnime1.gif'
+			pathImage='images/planeteAnime1.gif'
 			break;
 			
 		case 62:
-			pathImage='http://localhost/Raystorm/images/planeteAnime2.gif'
+			pathImage='images/planeteAnime2.gif'
 			break;
 			
 		case 63:
-			pathImage='http://localhost/Raystorm/images/planeteAnime3.gif'
+			pathImage='images/planeteAnime3.gif'
 			break;
 			
 		case 64:
-			pathImage='http://localhost/Raystorm/images/lune1.gif'
+			pathImage='images/lune1.gif'
 			break;
 			
 		case 65:
-			pathImage='http://localhost/Raystorm/images/lune2.png'
+			pathImage='images/lune2.png'
 			break;
 			
 		case 66:
-			pathImage='http://localhost/Raystorm/images/lune3.png'
+			pathImage='images/lune3.png'
 			break;
 			
 		case 67:
-			pathImage='http://localhost/Raystorm/images/lune4.gif'
+			pathImage='images/lune4.gif'
 			break;
 			
 		case 68:
-			pathImage='http://localhost/Raystorm/images/lune5.gif'
+			pathImage='images/lune5.gif'
 			break;
 			
 
 		default:
-			pathImage='http://localhost/Raystorm/images/planete2.png'
+			pathImage='images/planete2.png'
 			break;
 	}
 	return pathImage;

@@ -1,5 +1,5 @@
 
-// We need to use the express framework: have a real web servler that knows how to send mime types etc.
+// We need to use the express framework: have a real web server that knows how to send mime types etc.
 var express=require('express');
 
 // Init globals variables for each module required
@@ -25,6 +25,7 @@ app.get('/', function (req, res) {
 var usernames = {};
 var listOfPlayers = {};
 
+// When the clients connect...
 io.sockets.on('connection', function (socket) {
 
 	// when the client emits 'sendchat', this listens and executes
