@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="icon" href="images/PenroseColor.ico" type="image/x-icon" />
+<meta name="description" content="Jeu RayStorm" />
+<meta name="keywords" content="RayStorm, Jeu, JavaScript" />
+<meta name="author" content="AUDA">
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="css/help_page.css">
+<title>RayStorm help page</title>
+<script type="text/javascript" src="js/date_heure.js"></script>
+</head>
+<body>
+
+<a href="RayStorm.html" title="Return to the game">Return to the game</a> <span id="separator">|</span> <a href="javascript:document.location.href='help_page.html'" title="Scroll Help text again">View the help content again</a> <span id="separator">|</span> <a id="muteLink" href="#" onclick="toggleMute()" title="Mute and unmute this page.">mute</a>
+
+<script type="text/javascript">
+var isMute = false;
+
+function toggleMute() {
+	mute(isMute);
+	document.getElementById("muteLink").innerText = isMute ? "unmute"
+			: "mute";
+}
+
+
+//Mutes or unmutes the game.
+function mute(mute) {
+
+	//  If we've been told to mute, mute.
+	if(mute === true) {
+		//this.sounds.mute = true;
+			var player = document.querySelector('#audioPlayer');
+			player.volume = 1;
+		isMute = false;
+
+	} else if (mute === false) {
+		//this.sounds.mute = false;
+			var player = document.querySelector('#audioPlayer');
+			player.volume = 0;
+		isMute = true;
+	} else {
+		// Toggle mute instead...
+		//this.sounds.mute = this.sounds.mute ? false : true;
+	}
+};
+
+
+</script>
+
+<aside id="help_date">
+		<span id="help_date_heure"></span>
+		<script type="text/javascript">
+			 date_heure('help_date_heure');
+		</script>
+	</aside>
+	
+	<audio id="audioPlayer"> <source src="sounds/STAR_WARS.mp3"> </audio>
+	
+	<script type="text/javascript">
+	var player = document.querySelector('#audioPlayer');
+	setTimeout(function() {
+		player.play();
+	}, 2000)
+	</script>
+	
+	<p id="start">Long ago, in a distant galaxy, very distant&hellip;</p>
+
+<h1>RayStorm<br/><sub>Users Guide</sub></h1>
+
+<div id="titles"><div id="titlecontent">
+
+	<p class="center">RULES AND TIPS<br/>A NEW HOPE FOR YOU</p>
+	
+	<p>Here they come! They came from the depths of the galaxy to invade our dear and beloved native planet.<br/>
+More numerous, more powerful, better armed, the INVADERS are here!</p>
+
+<p>In a last attempt to save our planet, the best scientists concentrated all their technological
+ knowledge to build new generation of ships to try to push the invaders back to infinity and beyond.</p>
+ 
+ <p>So, if you want to live long and prosper, follow these instructions carefully, you must!</p>
+	
+	<p>Move your ship with arrow<br/> keys or with the joysticks of the<br /> gamepad.</p>
+	
+	<p>You can fire lasers with the space <br/> bar or with the A (XBox) or X <br /> (PlayStation)
+					button of the gamepad.</p>
+	
+	<p>You can also change the aspect <br/> of your ship
+					with LB/RB buttons <br/> (XBox) or L1/R1 (PlayStation)<br/> of the gamepad and
+					put the game in <br/> pause with 'p' or with <br/> RT/LB button (XBox) or R1/L1
+					<br/>(PlayStation) of the gamepad.</p>
+	
+	<p>The red stars you will try to catch, to obtain
+					a <br/> super attack for a few seconds and <br/> the blue stars to obtain an
+					invincible <br/> shield for a few seconds too !</p>
+	
+	<p>But be careful, the invaders get <br/> faster
+					and drop more bombs <br/> as you complete each level !</p>
+	
+
+	<p>And if you forget these <br/> instructions later, view this page again, Luke!</p>
+	
+	<p>You are welcome to see all the sources <br/> of this game on github at this link:</p>
+	
+	<p class="center"><a href="https://github.com/alexandreauda/Raystorm">alexandreauda/Raystorm</a></p>
+	
+	<p>Finally, may the force be with you and remember, like Han, shoot first !</p>
+
+</div></div>
+</body>
+</html>

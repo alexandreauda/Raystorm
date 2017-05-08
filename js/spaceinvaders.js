@@ -29,10 +29,13 @@ function Game() {
 	//  Set the initial config.
 	this.config = {
 			bombRate: 0.05, // Number of bombs of the invaders.
+			lightSaberRate: 0.01, // Number of bombs of the invaders.
 			powerItemRate: 0.007, // Number of bombs of the invaders.
 			shipShieldItemRate: 0.006, // Number of bombs of the invaders.
 			bombMinVelocity: 50, // Velocity minimal of the bomb.
 			bombMaxVelocity: 50, // Velocity maximal of the bomb.
+			lightSaberMinVelocity: 50, // Velocity minimal of the bomb.
+			lightSaberMaxVelocity: 50, // Velocity maximal of the bomb.
 			invaderInitialVelocity: 25, // Velocity initial of the invader.
 			invaderAcceleration: 0, // Acceleration of the invader.
 			invaderDropDistance: 20, 
@@ -604,6 +607,7 @@ function PlayState(config, level) {
 	this.invaders = [];
 	this.rockets = [];
 	this.bombs = [];
+	this.lightSabers = [];
 	this.powerItems = [];
 	this.shipShieldItems = [];
 }
@@ -625,10 +629,13 @@ PlayState.prototype.enter = function(game) {
 	this.shipSpeed = this.config.shipSpeed;
 	this.invaderInitialVelocity = this.config.invaderInitialVelocity + (levelMultiplier * this.config.invaderInitialVelocity);
 	this.bombRate = this.config.bombRate + (levelMultiplier * this.config.bombRate);
+	this.lightSaberRate = this.config.lightSaberRate + (levelMultiplier * this.config.lightSaberRate);
 	this.powerItemRate = this.config.powerItemRate;
 	this.shipShieldItemRate = this.config.shipShieldItemRate;
 	this.bombMinVelocity = this.config.bombMinVelocity + (levelMultiplier * this.config.bombMinVelocity);
 	this.bombMaxVelocity = this.config.bombMaxVelocity + (levelMultiplier * this.config.bombMaxVelocity);
+	this.lightSaberMinVelocity = this.config.lightSaberMinVelocity + (levelMultiplier * this.config.lightSaberMinVelocity);
+	this.lightSaberMaxVelocity = this.config.lightSaberMaxVelocity + (levelMultiplier * this.config.lightSaberMaxVelocity);
 
 	//  Create the invaders.
 	var ranks = this.config.invaderRanks;
@@ -711,10 +718,45 @@ PlayState.prototype.update = function(game, dt) {
 	for(var i=0; i<this.bombs.length; i++) {
 		var bomb = this.bombs[i];
 		bomb.y += dt * bomb.velocity;
+		if(this.level>=3){
+		bomb.x += bomb.angle * dt * bomb.velocity;	
+		}
 
 		//  If the rocket has gone off the screen remove it.
 		if(bomb.y > this.height) {
 			this.bombs.splice(i--, 1);
+		}
+	}
+	
+//  Move each lightSaber.
+	for(var i=0; i<this.lightSabers.length; i++) {
+		var lightSaber = this.lightSabers[i];
+		
+//		// Increment the angle of rotation.
+//		lightSaber.theta += 1;
+//		this.lightSabers[i].theta = lightSaber.theta;
+//		
+//		// Rotation.
+//		lightSaber.x = Math.cos(lightSaber.theta)*(lightSaber.x - lightSaber.x3) - Math.sin(lightSaber.theta)*(lightSaber.y - lightSaber.y3) + lightSaber.x3;
+//		lightSaber.y = Math.sin(lightSaber.theta) * (lightSaber.x - lightSaber.x3) + Math.sin(lightSaber.theta) * (lightSaber.y - lightSaber.y3) + lightSaber.y3;
+//		lightSaber.x2 = Math.cos(lightSaber.theta)*(lightSaber.x2 - lightSaber.x3) - Math.sin(lightSaber.theta)*(lightSaber.y2 - lightSaber.y3) + lightSaber.x3;
+//		lightSaber.y2 = Math.sin(lightSaber.theta) * (lightSaber.x2 - lightSaber.x3) + Math.sin(lightSaber.theta) * (lightSaber.y2 - lightSaber.y3) + lightSaber.y3;
+//		lightSaber.x3 = Math.cos(lightSaber.theta)*(lightSaber.x3 - lightSaber.x3) - Math.sin(lightSaber.theta)*(lightSaber.y3 - lightSaber.y3) + lightSaber.x3;
+//		lightSaber.y3 = Math.sin(lightSaber.theta) * (lightSaber.x3 - lightSaber.x3) + Math.sin(lightSaber.theta) * (lightSaber.y3 - lightSaber.y3) + lightSaber.y3;
+//		
+		// Translation.
+		lightSaber.y  += dt * lightSaber.velocity;
+		lightSaber.y2 += dt * lightSaber.velocity;
+		lightSaber.y3 += dt * lightSaber.velocity;
+		if(this.level>=3){ 
+			lightSaber.x += lightSaber.angle * dt * lightSaber.velocity;
+			lightSaber.x2 += lightSaber.angle * dt * lightSaber.velocity;
+			lightSaber.x3 += lightSaber.angle * dt * lightSaber.velocity;
+		}
+
+		//  If the rocket has gone off the screen remove it.
+		if(lightSaber.y > this.height) {
+			this.lightSabers.splice(i--, 1);
 		}
 	}
 
@@ -846,7 +888,19 @@ PlayState.prototype.update = function(game, dt) {
 		if(chance > Math.random()) {
 			//  Fire!
 			this.bombs.push(new Bomb(invader.x, invader.y + invader.height / 2, 
-					this.bombMinVelocity + Math.random()*(this.bombMaxVelocity - this.bombMinVelocity)));
+					this.bombMinVelocity + Math.random()*(this.bombMaxVelocity - this.bombMinVelocity), getRandomIntInclusive(-1,1)));
+		}
+	}
+	
+	//  Give each front rank invader a chance to drop a bomb.
+	for(var i=0; i<this.config.invaderFiles; i++) {
+		var invader = frontRankInvaders[i];
+		if(!invader) continue;
+		var chance = this.lightSaberRate * dt;
+		if(chance > Math.random()) {
+			//  Fire!
+			this.lightSabers.push(new LightSaber(invader.x, invader.y + invader.height / 2,
+					this.lightSaberMinVelocity + Math.random()*(this.lightSaberMaxVelocity - this.lightSaberMinVelocity), getRandomIntInclusive(-1,1)));
 		}
 	}
 
@@ -894,6 +948,32 @@ PlayState.prototype.update = function(game, dt) {
 		}
 
 	}
+	
+//  Check for lightSaber/ship collisions.
+	for(var i=0; i<this.lightSabers.length; i++) {
+		var lightSaber = this.lightSabers[i];
+		if(game.hasShield){
+			if(lightSaber.x2 >= (this.ship.x - this.ship.width/2)-20 && lightSaber.x2 <= (this.ship.x + this.ship.width/2) +20 &&
+					lightSaber.y2 >= (this.ship.y - this.ship.height/2) -30 && lightSaber.y2 <= (this.ship.y + this.ship.height/2) +30) {
+				this.lightSabers.splice(i--, 1);
+			}
+		}
+		else if((lightSaber.x >= (this.ship.x - this.ship.width/2) && lightSaber.x <= (this.ship.x + this.ship.width/2) &&
+				lightSaber.y >= (this.ship.y - this.ship.height/2) && lightSaber.y <= (this.ship.y + this.ship.height/2)) || (lightSaber.x1 >= (this.ship.x - this.ship.width/2) && lightSaber.x1 <= (this.ship.x + this.ship.width/2) &&
+						lightSaber.y1 >= (this.ship.y - this.ship.height/2) && lightSaber.y1 <= (this.ship.y + this.ship.height/2)) || ((lightSaber.x3 >= (this.ship.x - this.ship.width/2) && lightSaber.x3 <= (this.ship.x + this.ship.width/2) &&
+								lightSaber.y3 >= (this.ship.y - this.ship.height/2) && lightSaber.y3 <= (this.ship.y + this.ship.height/2)))) {
+			this.lightSabers.splice(i--, 1);
+			// If the ship doesn't have any shield, decrease the life.
+			if(!game.hasShield){
+				game.lives--;
+				game.config.rocketMaxFireRate = 0; // Decrease the fire rate during 8 secondes.
+				setTimeout(function () {game.config.rocketMaxFireRate=2;}, 8000); // After 8 seconds, set rocketMaxFireRate =2. 
+			}
+			//game.sounds.playSound('explosion');
+		}
+
+	}
+	
 
 //	Check for powerItem/ship collisions.
 	for(var i=0; i<this.powerItems.length; i++) {
@@ -999,6 +1079,16 @@ PlayState.prototype.draw = function(game, dt, ctx) {
 		invaderImg = new Image();
 		invaderImg.src = 'images/bouleDeFeuAnime.gif';
 		ctx.drawImage(invaderImg, bomb.x - 2, bomb.y - 2, 10, 15);
+	}
+	
+//  Draw lightSabers.
+	ctx.fillStyle = '#ff0000';
+	for(var i=0; i<this.lightSabers.length; i++) {
+		var lightSaber = this.lightSabers[i];
+		invaderImg = new Image();
+		invaderImg.src = 'images/fireBlue.gif';
+		ctx.drawImage(invaderImg, lightSaber.x - 2, lightSaber.y - 2, 15, 30);
+//		ctx.fillRect(lightSaber.x, lightSaber.y - 2, 1, 20);
 	}
 
 	//  Draw rockets.
@@ -1236,6 +1326,25 @@ function Ship(x, y) {
 }
 
 /*
+
+LightSaber class
+
+The LightSabers have a position, a width and a height.
+
+*/
+function LightSaber(x, y, velocity, angle) {
+	this.x = x;
+	this.y = y;
+	this.x2 = x;
+	this.y2 = y +20;
+	this.x3 = x;
+	this.y3 = y +10;
+	this.theta = 0;
+	this.velocity = velocity;
+	this.angle = angle;
+}
+
+/*
     Rocket class
 
     Fired by the ship, they've got a position, velocity and state.
@@ -1253,11 +1362,18 @@ function Rocket(x, y, velocity) {
     Dropped by invaders, they've got position, velocity.
 
  */
-function Bomb(x, y, velocity) {
+function Bomb(x, y, velocity, angle) {
 	this.x = x;
 	this.y = y;
 	this.velocity = velocity;
-}
+	this.angle = angle;
+}	
+
+function getRandomIntInclusive(min, max) {
+	  min = Math.ceil(min);
+	  max = Math.floor(max);
+	  return Math.floor(Math.random() * (max - min +1)) + min;
+	}
 
 /*
 PowerItem class
@@ -1653,4 +1769,14 @@ pathMusic='#audioPlayer'+nbMusic;
 break;
 }
 return pathMusic;
+}
+
+
+
+function Collision(box1, box2)
+{
+   if(true)  
+          return false; 
+   else
+          return true; 
 }

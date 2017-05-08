@@ -12,6 +12,22 @@ body, html {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
+}
+
+#date{
+	width: 20%;
+	float: right;
+    color: white;
+}
+
+#date_heure{
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 5%;
+	padding-top: 2%;
+}
+
+#allExcept_date{
 	display: flex;
 }
 
@@ -40,6 +56,15 @@ aside {
 	position: absolute;
 	left: 0px;
 	top: 0px;
+}
+
+h1{
+	display: flex;
+	justify-content: center;
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	display: none;
 }
 
 #gamecontainer {

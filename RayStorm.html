@@ -11,63 +11,78 @@
 <link rel="stylesheet" type="text/css" href="css/typeography.css">
 <link rel="stylesheet" type="text/css" href="css/RayStorm.css">
 <title>RayStorm</title>
-
+<script type="text/javascript" src="js/date_heure.js"></script>
 
 </head>
 
 <body onload="init();">
 
-	<aside>
-
-		<div id="fps"></div>
-		<br />
-		<div id="chat">
-		<p>
-			<canvas width=50 height=50 id="myCanvas"></canvas>
-		</p>
-		<div
-			style="float: left; width: 100px; border-right: 1px solid black; height: 300px; padding: 10px; overflow: scroll-y;">
-			<b>USERS</b>
-			<div id="users"></div>
-		</div>
-		<div
-			style="float: left; width: 300px; height: 250px; overflow: scroll-y; padding: 10px;">
-			<div id="conversation"></div>
-			<input id="data" style="width: 200px;" /> <input type="button"
-				id="datasend" value="send" />
-		</div>
-</div>
-
-<div id="audio"></div>
-
+	<aside id="date">
+		<span id="date_heure"></span>
+		<script type="text/javascript">
+			 date_heure('date_heure');
+		</script>
 	</aside>
 
-<div id= "gameAndFooter">
-	<section id="game">
-		<div id="starfield"></div>
-		<div id="gamecontainer">
-			<canvas id="gameCanvas"></canvas>
+	<div id = "allExcept_date">
+		<aside>
+
+			<div id="fps"></div>
+			<br />
+			<div id="chat">
+				<p>
+					<canvas width=50 height=50 id="myCanvas"></canvas>
+				</p>
+				<div
+					style="float: left; width: 100px; border-right: 1px solid black; height: 300px; padding: 10px; overflow: scroll-y;">
+					<b>USERS</b>
+					<div id="users"></div>
+				</div>
+				<div
+					style="float: left; width: 300px; height: 250px; overflow: scroll-y; padding: 10px;">
+					<div id="conversation"></div>
+					<input id="data" style="width: 200px;" /> <input type="button"
+						id="datasend" value="send" />
+				</div>
+			</div>
+
+			<div id="audio"></div>
+
+		</aside>
+
+
+		<div id="gameAndFooter">
+
+			<section id="game">
+				<h1>RayStorm</h1>
+				<div id="starfield"></div>
+				<div id="gamecontainer">
+					<canvas id="gameCanvas"></canvas>
+				</div>
+			</section>
+
+			<footer>
+				<div id="progress" class="progressbar"></div>
+				<div class="progressnum" id="progressnum"></div>
+
+
+				<p>Move with arrow keys or with the joysticks of the gamepad,
+					fire with the space bar or with the A (XBox) or X (PlayStation)
+					button of the gamepad. You can also change the aspect of your ship
+					with LB/RB buttons (XBox) or L1/R1 (PlayStation) of the gamepad and
+					put the game in pause with 'p' or with RT/LB button (XBox) or R1/L1
+					(PlayStation) of the gamepad. Try to catch the red stars to obtain
+					a super attack for a few seconds and the blue stars to obtain an
+					invincible shield for a few seconds too ! The invaders get faster
+					and drop more bombs as you complete each level !</p>
+				<p>
+					<a id="muteLink" href="#" onclick="toggleMute()" title="Mute and unmute the game.">mute</a> | <a
+						href="https://github.com/alexandreauda/Raystorm" title="Find all the sources of this game on github!">RayStorm on
+						github</a> | <a href="help_page.html" title="Find all the rules of the game and useful informations!">Help page</a>
+				</p>
+			</footer>
 		</div>
-	</section>
-	
-	  
-
-	<footer>
-	<p>
-	<div id="progress" class="progressbar"></div>
-  <div  class="progressnum" id="progressnum"></div>
-	</p>
-	
-			<p>Move with arrow keys or with the joysticks of the gamepad, fire with the space bar or with the A (XBox) or X (PlayStation) button of the gamepad. You can also change the aspect of your ship with LB/RB buttons (XBox) or L1/R1 (PlayStation) of the gamepad and put the game in pause with 'p' or with RT/LB button (XBox) or R1/L1 (PlayStation) of the gamepad. Try to catch the red stars to obtain a super attack for a few seconds and the blue stars to obtain an invincible shield for a few seconds too ! The invaders
-				get faster and drop more bombs as you complete each level !</p>
-			<p>
-				<a id="muteLink" href="#" onclick="toggleMute()">mute</a> | <a
-					href="https://github.com/alexandreauda/Raystorm">RayStorm on
-					github</a>
-			</p>
-
-	</footer>
-</div>
+	</div>
 	<script src="jeu.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="chat.js"></script>

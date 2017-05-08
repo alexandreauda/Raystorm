@@ -4,8 +4,8 @@ var express=require('express');
 
 // Init globals variables for each module required
 var app = express()
-  , http = require('http')
-  , server = http.createServer(app)
+  , http = require('http') //  Bibliothèque "http" qui nous permet de créer un serveur web.
+  , server = http.createServer(app) // Creation of the server.
   , io = require('socket.io').listen(server);
 
 // launch the http server on given port
@@ -16,7 +16,7 @@ server.listen(8082);
     app.use(express.static(__dirname + '/'));    
 
 
-// routing
+// routing. req is the request of the client and res is the response. We put in the response the HTML code presents in RayStorm.html.
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/RayStorm.html');
 });
