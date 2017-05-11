@@ -537,6 +537,23 @@ WelcomeState.prototype.keyDown = function(game, keyCode) {
 
 		game.moveToState(new LevelIntroState(game.level));
 	}
+	
+	if(keyCode===65){
+		if(game.numberShip > game.numberMaxShip){
+			game.numberShip = game.numberMaxShip;
+		}
+		else{
+			game.numberShip++;
+		}
+	}
+	if(keyCode===90){
+		if(game.numberShip < 0){
+			game.numberShip = 0;
+		}
+		else{
+			game.numberShip--;
+		}
+	}
 };
 
 /*  
@@ -1152,6 +1169,23 @@ PlayState.prototype.keyDown = function(game, keyCode) {
 
 		//Push the pause state.
 		game.pushState(new PauseState());
+	}
+	
+	if(keyCode===65){
+		if(game.numberShip > game.numberMaxShip){
+			game.numberShip = game.numberMaxShip;
+		}
+		else{
+			game.numberShip++;
+		}
+	}
+	if(keyCode===90){
+		if(game.numberShip < 0){
+			game.numberShip = 0;
+		}
+		else{
+			game.numberShip--;
+		}
 	}
 };
 

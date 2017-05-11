@@ -1,0 +1,109 @@
+@CHARSET "ISO-8859-1";
+
+/*Links*/
+
+a{
+	color: white;
+}
+
+#separator{
+	color: white;
+}
+
+/***********************************/
+
+/*Display of the time*/
+aside {
+	display: flex;
+	flex-direction: column;
+}
+
+#help_date{
+	width: 20%;
+	float: right;
+    color: white;
+}
+
+#help_date_heure{
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 5%;
+	padding-top: 2%;
+}
+
+/*************************************************************/
+
+/*Text Star wars*/
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700);
+
+* { padding: 0; margin: 0; }
+
+body, html
+{
+	width: 100%;
+	height: 100%;
+	font-family: "Droid Sans", arial, verdana, sans-serif;
+	font-weight: 700;
+	color: #ff6;
+	background-color: #000;
+	overflow: hidden;
+	/*back-ground image of a starfield*/
+	background-image: url("../images/starfield.jpg");
+	background-repeat: repeat;
+	background-size: cover;
+}
+
+#help_content{
+text-align: justify;
+margin-left: 30%; 
+}
+
+p#start
+{
+	margin-left: 30%; 
+	color: #4ee;
+	opacity: 1;
+	z-index: 1;
+}
+
+h1
+{
+	margin-left: 40%; 
+	margin-bottom: 4%;
+	color: #000;
+	text-shadow: -2px -2px 0 #ff6, 2px -2px 0 #ff6, -2px 2px 0 #ff6, 2px 2px 0 #ff6;
+	opacity: 1;
+	z-index: 1;
+
+}
+
+
+
+/* the interesting 3D scrolling stuff */
+#titles
+{
+	text-align: justify;
+	overflow: hidden;
+}
+
+
+#titles p
+{
+	text-align: justify;
+	margin: 0.8em 0;
+}
+
+#titles p.center
+{
+	text-align: center;
+}
+
+#titles a
+{
+	color: #ff6;
+	text-decoration: underline;
+}
+
+#titlecontent
+{
+}

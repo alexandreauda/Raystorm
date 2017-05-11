@@ -6,8 +6,8 @@
 <meta name="keywords" content="RayStorm, Jeu, JavaScript" />
 <meta name="author" content="AUDA">
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="css/help_page.css">
-<title>RayStorm help page</title>
+<link rel="stylesheet" type="text/css" href="css/help_page_static.css">
+<title>RayStorm static help page</title>
 <script type="text/javascript" src="js/date_heure.js"></script>
 </head>
 <body>
@@ -15,10 +15,7 @@
 	<a href="RayStorm.html" title="Return to the game">Return to the
 		game</a>
 	<span id="separator">|</span>
-	<a href="javascript:document.location.href='help_page.html'"
-		title="Scroll Help text again">View the help content again</a>
-	<span id="separator">|</span>
-	<a href="help_page_static.html" title="View the help page without the scrolling">View the static help page</a>
+	<a href="help_page.html" title="View the help page">View the help page</a>
 	<span id="separator">|</span>
 	<a id="muteLink" href="#" onclick="toggleMute()"
 		title="Mute and unmute this page.">mute</a>
@@ -72,15 +69,16 @@
 		}, 2000)
 	</script>
 
-	<p id="start">Long ago, in a distant galaxy, very distant&hellip;</p>
-
-	<h1>
-		RayStorm<br />
-		<sub>Users Guide</sub>
-	</h1>
+	<div id="help_content">
 
 	<div id="titles">
 		<div id="titlecontent">
+		
+			<p id="start">Long ago, in a distant galaxy, very distant&hellip;</p>
+
+	<h1>
+		RayStorm
+	</h1>
 
 			<p class="center">
 				RULES AND TIPS<br />A NEW HOPE FOR YOU
@@ -154,6 +152,7 @@
 				shoot first !</p>
 
 		</div>
+	</div>
 	</div>
 </body>
 </html>
