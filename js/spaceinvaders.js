@@ -554,6 +554,19 @@ WelcomeState.prototype.keyDown = function(game, keyCode) {
 			game.numberShip--;
 		}
 	}
+	
+	/*If press the h key, redirection to the help page.*/
+	if(keyCode==72){
+	document.location.href='help_page.html';
+	}
+	/*If press the s key, redirection to the static help page.*/
+	if(keyCode==83){
+		document.location.href='help_page_static.html';
+		}
+	/*If press the g key, redirection to the github page.*/
+	if(keyCode==71){
+	document.location.href='https://github.com/alexandreauda/Raystorm';
+	}
 };
 
 /*  
@@ -1187,6 +1200,19 @@ PlayState.prototype.keyDown = function(game, keyCode) {
 			game.numberShip--;
 		}
 	}
+	
+	/*If press the h key, redirection to the help page.*/
+	if(keyCode==72){
+	document.location.href='help_page.html';
+	}
+	/*If press the s key, redirection to the static help page.*/
+	if(keyCode==83){
+		document.location.href='help_page_static.html';
+		}
+	/*If press the g key, redirection to the github page.*/
+	if(keyCode==71){
+	document.location.href='https://github.com/alexandreauda/Raystorm';
+	}
 };
 
 PlayState.prototype.keyUp = function(game, keyCode) {
@@ -1231,6 +1257,19 @@ PauseState.prototype.keyDown = function(game, keyCode) {
 		game.playmusic = false; // Variable to play the music of the main game.
 		//  Pop the pause state.
 		game.popState();
+	}
+	
+	/*If press the h key, redirection to the help page.*/
+	if(keyCode==72){
+	document.location.href='help_page.html';
+	}
+	/*If press the s key, redirection to the static help page.*/
+	if(keyCode==83){
+		document.location.href='help_page_static.html';
+		}
+	/*If press the g key, redirection to the github page.*/
+	if(keyCode==71){
+	document.location.href='https://github.com/alexandreauda/Raystorm';
 	}
 };
 
@@ -1342,6 +1381,19 @@ GameOverState.prototype.keyDown = function(game, keyCode) {
 //		game.playMusiqueGameOver = false;
 
 		game.moveToState(new LevelIntroState(1));
+	}
+	
+	/*If press the h key, redirection to the help page.*/
+	if(keyCode==72){
+	document.location.href='help_page.html';
+	}
+	/*If press the s key, redirection to the static help page.*/
+	if(keyCode==83){
+		document.location.href='help_page_static.html';
+		}
+	/*If press the g key, redirection to the github page.*/
+	if(keyCode==71){
+	document.location.href='https://github.com/alexandreauda/Raystorm';
 	}
 };
 

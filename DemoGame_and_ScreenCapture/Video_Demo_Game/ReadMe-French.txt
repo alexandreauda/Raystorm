@@ -1,0 +1,1 @@
+La vidéo RayStormDemo.avi vous présente un aperçu du projet personnel RayStorm. Le framerate du jeu n'est pas représentatif de celui du jeu. C'est une limitation de l'outil de capture vidéo mais ne vous inquiétez pas: le jeu, lui, est fluide ;)

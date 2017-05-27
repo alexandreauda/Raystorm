@@ -1,0 +1,1 @@
+The video RaystormDemo.avi shows you an overview of the personal project RayStorm game. The framerate of the video is not representative of the framerate of the game. It is a limitation of the video capture tool but don't worry, the game is fluid ;)
