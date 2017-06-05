@@ -81,4 +81,10 @@ io.sockets.on('connection', function (socket) {
 		// echo globally that this client has left
 		socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
 	});
+	
+	// Give life to crew only.
+	socket.on('giveLifeToCrew', function (game) {
+		//console.log(game.lives);
+		socket.broadcast.emit('giveLifeToCrewOnly', game);
+	});
 });

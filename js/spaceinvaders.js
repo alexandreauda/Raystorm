@@ -32,6 +32,7 @@ function Game() {
 			lightSaberRate: 0.01, // Number of bombs of the invaders.
 			powerItemRate: 0.007, // Number of bombs of the invaders.
 			shipShieldItemRate: 0.006, // Number of bombs of the invaders.
+			lifeCrewItemRate: 0.0008, // Number of bombs of the invaders.
 			bombMinVelocity: 50, // Velocity minimal of the bomb.
 			bombMaxVelocity: 50, // Velocity maximal of the bomb.
 			lightSaberMinVelocity: 50, // Velocity minimal of the bomb.
@@ -640,6 +641,7 @@ function PlayState(config, level) {
 	this.lightSabers = [];
 	this.powerItems = [];
 	this.shipShieldItems = [];
+	this.lifeCrewItems = [];
 }
 
 /******CLASS METHODS FOR PLAYSTATE CLASS******/
@@ -662,6 +664,7 @@ PlayState.prototype.enter = function(game) {
 	this.lightSaberRate = this.config.lightSaberRate + (levelMultiplier * this.config.lightSaberRate);
 	this.powerItemRate = this.config.powerItemRate;
 	this.shipShieldItemRate = this.config.shipShieldItemRate;
+	this.lifeCrewItemRate = this.config.lifeCrewItemRate;
 	this.bombMinVelocity = this.config.bombMinVelocity + (levelMultiplier * this.config.bombMinVelocity);
 	this.bombMaxVelocity = this.config.bombMaxVelocity + (levelMultiplier * this.config.bombMaxVelocity);
 	this.lightSaberMinVelocity = this.config.lightSaberMinVelocity + (levelMultiplier * this.config.lightSaberMinVelocity);
@@ -811,6 +814,17 @@ PlayState.prototype.update = function(game, dt) {
 			this.shipShieldItems.splice(i--, 1);
 		}
 	}
+	
+//	Move each lifeCrewItems.
+	for(var i=0; i<this.lifeCrewItems.length; i++) {
+		var lifeCrewItem = this.lifeCrewItems[i];
+		lifeCrewItem.y += dt * lifeCrewItem.velocity;
+
+		//  If the powerItem has gone off the screen remove it.
+		if(lifeCrewItem.y > this.height) {
+			this.lifeCrewItems.splice(i--, 1);
+		}
+	}
 
 	//  Move each rocket.
 	for(i=0; i<this.rockets.length; i++) {
@@ -957,6 +971,18 @@ PlayState.prototype.update = function(game, dt) {
 					this.bombMinVelocity + Math.random()*(this.bombMaxVelocity - this.bombMinVelocity)));
 		}
 	}
+	
+//	Give each front rank invader a chance to drop a lifeCrewItems.
+	for(var i=0; i<this.config.invaderFiles; i++) {
+		var invader = frontRankInvaders[i];
+		if(!invader) continue;
+		var chance = this.lifeCrewItemRate * dt;
+		if(chance > Math.random()) {
+			//  Fire!
+			this.lifeCrewItems.push(new LifeCrewItem(invader.x, invader.y + invader.height / 2, 
+					this.bombMinVelocity + Math.random()*(this.bombMaxVelocity - this.bombMinVelocity)));
+		}
+	}
 
 	//  Check for bomb/ship collisions.
 	for(var i=0; i<this.bombs.length; i++) {
@@ -1034,7 +1060,18 @@ PlayState.prototype.update = function(game, dt) {
 			//game.lives++;
 			//game.sounds.playSound('bonus_attack');
 		}
-
+	}
+	
+//	Check for lifeCrewItem/ship collisions.
+	for(var i=0; i<this.lifeCrewItems.length; i++) {
+		var lifeCrewItem = this.lifeCrewItems[i];
+		if(lifeCrewItem.x >= (this.ship.x - this.ship.width/2) && lifeCrewItem.x <= (this.ship.x + this.ship.width/2) &&
+				lifeCrewItem.y >= (this.ship.y - this.ship.height/2) && lifeCrewItem.y <= (this.ship.y + this.ship.height/2)) {
+			this.lifeCrewItems.splice(i--, 1);
+			//get some powers
+			game.lives++;
+			socket.emit('giveLifeToCrew', game);
+		}
 	}
 
 	//  Check for invader/ship collisions.
@@ -1142,6 +1179,14 @@ PlayState.prototype.draw = function(game, dt, ctx) {
 		invaderImg = new Image();
 		invaderImg.src = 'images/etoileAnime10.png';
 		ctx.drawImage(invaderImg, shipShieldItem.x - 2, shipShieldItem.y - 2, 25, 20);
+	}
+	
+	//  Draw item super powers lifeCrew.
+	for(var i=0; i<this.lifeCrewItems.length; i++) {
+		var lifeCrewItem = this.lifeCrewItems[i];
+		invaderImg = new Image();
+		invaderImg.src = 'images/croixRouge1.png';
+		ctx.drawImage(invaderImg, lifeCrewItem.x - 2, lifeCrewItem.y - 2, 25, 20);
 	}
 
 
@@ -1480,6 +1525,18 @@ Dropped by invaders, they've got position, velocity.
 
  */
 function ShieldItem(x, y, velocity) {
+	this.x = x;
+	this.y = y;
+	this.velocity = velocity;
+}
+
+/*
+LifeCrewItem class
+
+Dropped by invaders, they've got position, velocity.
+
+ */
+function LifeCrewItem(x, y, velocity) {
 	this.x = x;
 	this.y = y;
 	this.velocity = velocity;
@@ -1866,3 +1923,13 @@ function Collision(box1, box2)
    else
           return true; 
 }
+
+
+function increaseLife() {
+	game.lives++;
+}
+
+socket.on('giveLifeToCrewOnly', function(){
+//	console.log(game.lives);
+	increaseLife();
+});
