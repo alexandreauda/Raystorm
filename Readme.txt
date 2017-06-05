@@ -30,10 +30,18 @@ Les étoiles rouges vous donneront un avantage offensif certain en augmentant la
 Les étoiles bleues en revanche, vous donneront un avantage défensif précieux en vous protégeant contre les attaques ennemies pendant un court laps de temps.
 Pour plus d’information, veuillez-vous reporter sur le « Rapport » qui vous fournira de plus ample information.
 
-IV-Passage de niveau:
+IV-Réparation et jeu en réseau:
+Au cours du jeu, il vous sera également possible de regagner de la vie.
+Pour cela, vous pourrez compter sur une source d’énergie particulière que vous pourrez tenter d’intercepter pour alimenter vos systèmes de réparations dédiés et réparer ou améliorer votre vaisseau. En outre, cet effet se traduira par l’obtention d’un point de vie supplémentaire.
+De plus, il est tout à fait possible de jouer en réseau avec vos amis.
+Ainsi, lorsque l’un des joueurs (vous ou l’un de vos coéquipiers) prendra un pack de réparation lui faisant gagner une vie, l’ensemble de son équipe pourra en bénéficier.
+Pour faciliter la communication entre vous et vos coéquipiers, un chat en réseau est également mis à votre disposition.
+Pour plus d’information, veuillez-vous reporter sur le « Rapport » qui vous fournira de plus ample information. 
+
+V-Passage de niveau:
 Lorsque vous détruisez tous les Invaders d’un niveau, vous passez au niveau suivant. Vous devrez toutefois redoubler de vigilance et d’attention car plus vous augmenterez de niveau, plus les tirs des Invaders seront rapides et fréquents. De plus, leurs propres déplacements seront augmentés.
 
-V-Fin du jeu:
+VI-Fin du jeu:
 Enfin, si votre vie tombe à 0 ou que vous touchez physiquement un Invader avec votre spaceship, vous avez perdu. Un menu indiquera votre score, votre niveau et une musique spécifique sera jouée. Vous pouvez alors recommencer le jeu en appuyant indifféremment sur la barre d’espace ou sur « Start » si vous utilisez un Gamepad.
 
 ANNEXE:
